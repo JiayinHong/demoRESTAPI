@@ -29,40 +29,40 @@ class ProteinSource(db.Model):
 	protein_name = db.Column("name", db.String(100), db.ForeignKey('ProteinDB.name'), primary_key=False)
 	dataset_id = db.Column(db.String(100))
 	
-db.drop_all()
-db.create_all()	# re-run it will erase our data
+# db.drop_all()
+# db.create_all()	# re-run it will erase our data
 
 # mypath = "/Users/jh2313/JupyterProjects/Front-end web development/database/AdditionalDatasets/"
-mypath = "AdditionalDatasets/"
-all_files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-if '.DS_Store' in all_files:
-	all_files.remove('.DS_Store')
+# mypath = "AdditionalDatasets/"
+# all_files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+# if '.DS_Store' in all_files:
+# 	all_files.remove('.DS_Store')
 
-for file in all_files:
-	path_to_file = join(mypath,file)
-	dataset_id = re.sub('.csv','',file)
+# for file in all_files:
+# 	path_to_file = join(mypath,file)
+# 	dataset_id = re.sub('.csv','',file)
 
-	with open(path_to_file,'r') as f:
-		data_df = pd.read_csv(f,index_col=0)
-		data_df = data_df.rename(columns={"Protein.name1":"name", "ID ":"id"})
-		data_df['id'] = np.array(list(map(lambda v: re.sub(r"\(|\)| ","", v),data_df['id'].values)))
-		data_df['name'] = np.array(list(map(lambda v: re.sub(r" ","", v),data_df['name'].values)))
-		# there are duplicates in dummy datasets
-		data_df.drop_duplicates(inplace=True,ignore_index=True)
-		con = db.engine
-		# check whether database is empty
-		# if pd.read_sql("SELECT * FROM protein_source", con).empty:
-		# the initial conversion from a CSV dataset to the ProteinDB database
-			# data_df.to_sql(name='ProteinDB',con=db.engine,index=False,if_exists='append')
-		# else:
-		# append new data into existied database, need to check uniqueness
-		existed_name = pd.read_sql("SELECT name FROM ProteinDB", con).values.flatten().tolist()
-			# only put novel protein into DB
-		data_df[~data_df.name.isin(existed_name)].to_sql(name='ProteinDB',con=db.engine,index=False,if_exists='append')
+# 	with open(path_to_file,'r') as f:
+# 		data_df = pd.read_csv(f,index_col=0)
+# 		data_df = data_df.rename(columns={"Protein.name1":"name", "ID ":"id"})
+# 		data_df['id'] = np.array(list(map(lambda v: re.sub(r"\(|\)| ","", v),data_df['id'].values)))
+# 		data_df['name'] = np.array(list(map(lambda v: re.sub(r" ","", v),data_df['name'].values)))
+# 		# there are duplicates in dummy datasets
+# 		data_df.drop_duplicates(inplace=True,ignore_index=True)
+# 		con = db.engine
+# 		# check whether database is empty
+# 		if pd.read_sql("SELECT * FROM protein_source", con).empty:
+# 		# the initial conversion from a CSV dataset to the ProteinDB database
+# 			data_df.to_sql(name='ProteinDB',con=db.engine,index=False,if_exists='append')
+# 		else:
+# 		# append new data into existied database, need to check uniqueness
+# 			existed_name = pd.read_sql("SELECT name FROM ProteinDB", con).values.flatten().tolist()
+# 			# only put novel protein into DB
+# 			data_df[~data_df.name.isin(existed_name)].to_sql(name='ProteinDB',con=db.engine,index=False,if_exists='append')
 
-		# record protein source info to protein_source table
-		data_df['dataset_id'] = dataset_id
-		data_df.to_sql(name='protein_source',con=db.engine,index=False,if_exists='append')
+# 		# record protein source info to protein_source table
+# 		data_df['dataset_id'] = dataset_id
+# 		data_df.to_sql(name='protein_source',con=db.engine,index=False,if_exists='append')
 
 protein_put_args = reqparse.RequestParser()
 protein_put_args.add_argument("id", type=str, help="ID of the protein", required=True)
@@ -115,4 +115,4 @@ api.add_resource(Protein, "/protein/<proteinName>")	# "< >" cannot be deleted
 
 if __name__ == "__main__":
 	app.run(debug=True)
-	# app.run(host='0.0.0.0', port=81)
+	# app.run(host='0.0.0.0', port=82)
