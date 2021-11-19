@@ -53,7 +53,7 @@ for file in all_files:
 		# check whether database is empty
 		if pd.read_sql("SELECT * FROM protein_source", con).empty:
 		# the initial conversion from a CSV dataset to the ProteinDB database
-			data_df.to_sql(name='ProteinDB',con=db.engine,index=False,if_exists='append')
+			# data_df.to_sql(name='ProteinDB',con=db.engine,index=False,if_exists='append')
 		else:
 		# append new data into existied database, need to check uniqueness
 			existed_name = pd.read_sql("SELECT name FROM ProteinDB", con).values.flatten().tolist()
