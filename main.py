@@ -33,7 +33,7 @@ db.drop_all()
 db.create_all()	# re-run it will erase our data
 
 # mypath = "/Users/jh2313/JupyterProjects/Front-end web development/database/AdditionalDatasets/"
-mypath = "/AdditionalDatasets/"
+mypath = "AdditionalDatasets/"
 all_files = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 if '.DS_Store' in all_files:
 	all_files.remove('.DS_Store')
