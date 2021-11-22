@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
@@ -8,6 +9,7 @@ from os import listdir
 from os.path import isfile, join
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AdditionalData.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -82,7 +84,7 @@ class Protein(Resource):
 	@marshal_with(resource_fields)	# to serialize the output
 	def get(self, proteinName):
 		result = ProteinSource.query.filter_by(protein_name=proteinName).all()
-		result.headers.add("Access-Control-Allow-Origin", "*")
+		# result.headers.add("Access-Control-Allow-Origin", "*")
 		if not result:
 			abort(404, message="Could not find protein with that name")
 		return result
