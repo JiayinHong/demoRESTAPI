@@ -82,6 +82,7 @@ class Protein(Resource):
 	@marshal_with(resource_fields)	# to serialize the output
 	def get(self, proteinName):
 		result = ProteinSource.query.filter_by(protein_name=proteinName).all()
+		result.headers.add("Access-Control-Allow-Origin", "*")
 		if not result:
 			abort(404, message="Could not find protein with that name")
 		return result
