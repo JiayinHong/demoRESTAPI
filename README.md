@@ -2,8 +2,8 @@
 a demo to set up a REST API
 using Heroku as the server at the moment
 
-Below are some commands to create the app on Heroku
-need to git init the directory beforehand
+Below are some commands to create the app on Heroku. 
+need to git init the directory beforehand. 
 $ heroku create
 Creating app... done, ⬢ murmuring-everglades-08386
 https://murmuring-everglades-08386.herokuapp.com/ | https://git.heroku.com/murmuring-everglades-08386.git
